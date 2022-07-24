@@ -108,7 +108,14 @@ function memoize(func) {
  * retryer() => 2
  */
 function retry(func, attempts) {
-  return func + attempts;
+  const result = (attemptsLeft = attempts) => {
+    try {
+      return func();
+    } catch (e) {
+      return result(attemptsLeft - 1);
+    }
+  };
+  return result;
 }
 
 /**
